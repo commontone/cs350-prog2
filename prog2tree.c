@@ -14,6 +14,7 @@ int main(int argc, char **argv) {
 	int children = 1;
 	int levels = 1;
 	int stime = -1;
+	char *end;
 
 	/* Check for a usage string option */
 	for(i=0;i<argc;i++) {
@@ -33,11 +34,23 @@ int main(int argc, char **argv) {
 				break;
 			case 'N':
 				/* printf("Levels: %s \n", optarg); */
-				levels = atoi(optarg);
+				levels = (int)strtol(optarg, &end, 10);
+				if(*end) {
+					fprintf(stderr, "Bad input detected. ASCII value: %d. Try again.\n", (int)(*end));
+					fprintf(stderr, "This program demonstrates creating child processes of N recursive levels and M children per level\n");
+					fprintf(stderr, "prog2tree [-u] [-N <num-levels>] [-M <num-children>] [-p] [-s <sleep-time]\n");
+					exit(1);
+				}
 				break;
 			case 'M':
 				/* printf("Children: %s \n", optarg); */
-				children = atoi(optarg);
+				children = (int)strtol(optarg, &end, 10);
+				if(*end) {
+					fprintf(stderr, "Bad input detected. ASCII value: %d. Try again.\n", (int)(*end));
+					fprintf(stderr, "This program demonstrates creating child processes of N recursive levels and M children per level\n");
+					fprintf(stderr, "prog2tree [-u] [-N <num-levels>] [-M <num-children>] [-p] [-s <sleep-time]\n");
+					exit(1);
+				}
 				break;
 			case 'p':
 				/* printf("Pausing Requested\n"); */
@@ -45,12 +58,24 @@ int main(int argc, char **argv) {
 				break;
 			case 's':
 				/* printf("Sleep Time (s): %s\n", optarg); */
-				stime = atoi(optarg);
+				stime = (int)strtol(optarg, &end, 10);
+				if(*end) {
+					fprintf(stderr, "Bad input detected. ASCII value: %d. Try again.\n", (int)(*end));
+					fprintf(stderr, "This program demonstrates creating child processes of N recursive levels and M children per level\n");
+					fprintf(stderr, "prog2tree [-u] [-N <num-levels>] [-M <num-children>] [-p] [-s <sleep-time]\n");
+					exit(1);
+				}
+				break;
+			case '?':
+				fprintf(stderr, "Missing argument. Try again.\n");
+				fprintf(stderr, "This program demonstrates creating child processes of N recursive levels and M children per level\n");
+				fprintf(stderr, "prog2tree [-u] [-N <num-levels>] [-M <num-children>] [-p] [-s <sleep-time]\n");
+				exit(1);
 				break;
 		}
 	}
 
-	/* Input Cleansing */
+	/* Input Checking */
 	if(pauses) {
 		if(stime != -1) {
 			fprintf(stderr, "Cannot use -p and -s simultaneously.\n");
